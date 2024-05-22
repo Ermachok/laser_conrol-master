@@ -80,6 +80,7 @@ class App(QtWidgets.QMainWindow, laser_gui.Ui_MainWindow):
         except Exception:
             self.Console.append('Some error in getting ophir status ')
 
+
     def arm_ophir(self):
         try:
             result = Ophir.arm_ophir(int(self.ShotNumber.toPlainText()))
