@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(929, 427)
+        MainWindow.resize(1047, 427)
         MainWindow.setStyleSheet("background-color:rgb(219, 255, 255);\n"
 "")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -51,13 +51,13 @@ class Ui_MainWindow(object):
         self.Clock.setGeometry(QtCore.QRect(30, 140, 211, 61))
         self.Clock.setObjectName("Clock")
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(530, 10, 341, 21))
+        self.label_2.setGeometry(QtCore.QRect(670, 10, 341, 21))
         self.label_2.setStyleSheet("background-color: rgb(0, 170, 255);\n"
 "font: 75 10pt \"MS Shell Dlg 2\";")
         self.label_2.setAlignment(QtCore.Qt.AlignCenter)
         self.label_2.setObjectName("label_2")
         self.gridLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
-        self.gridLayoutWidget_2.setGeometry(QtCore.QRect(530, 40, 341, 101))
+        self.gridLayoutWidget_2.setGeometry(QtCore.QRect(670, 40, 341, 101))
         self.gridLayoutWidget_2.setObjectName("gridLayoutWidget_2")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.gridLayoutWidget_2)
         self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -78,6 +78,12 @@ class Ui_MainWindow(object):
         self.Console.setGeometry(QtCore.QRect(30, 220, 841, 181))
         self.Console.setStyleSheet("background: rgb(255, 255, 255)")
         self.Console.setObjectName("Console")
+        self.ShotNumber = QtWidgets.QTextEdit(self.centralwidget)
+        self.ShotNumber.setGeometry(QtCore.QRect(510, 30, 71, 21))
+        self.ShotNumber.setObjectName("ShotNumber")
+        self.label_3 = QtWidgets.QLabel(self.centralwidget)
+        self.label_3.setGeometry(QtCore.QRect(510, 10, 71, 16))
+        self.label_3.setObjectName("label_3")
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -99,3 +105,4 @@ class Ui_MainWindow(object):
         self.ArmOphir.setText(_translate("MainWindow", "ARM OPHIR"))
         self.StatusOphir.setText(_translate("MainWindow", "STATUS"))
         self.DisarmOphir.setText(_translate("MainWindow", "DISARM OPHIR"))
+        self.label_3.setText(_translate("MainWindow", "SHOT NUMBER"))

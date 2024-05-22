@@ -2,7 +2,10 @@ from PyQt5 import QtWidgets
 from PyQt5.QtCore import QTimer
 import sys
 from laser_utils import laser_gui, laser_functions
-from ophir_utils.sensor import Sensor
+from ophir_utils.sensor_interface import Ophir
+
+Ophir = Ophir(ip_host='172.16.12.69', port=8888)
+
 
 class App(QtWidgets.QMainWindow, laser_gui.Ui_MainWindow):
     def __init__(self):
@@ -20,6 +23,8 @@ class App(QtWidgets.QMainWindow, laser_gui.Ui_MainWindow):
         self.StopfireButton.clicked.connect(self.stop_fire_laser)
 
         self.timer_clock = 0
+
+        self.Ophir = Ophir
 
         self.ConnectOphir.clicked.connect(self.connect_ophir)
         self.StatusOphir.clicked.connect(self.status_ophir)
@@ -59,20 +64,37 @@ class App(QtWidgets.QMainWindow, laser_gui.Ui_MainWindow):
 
     def stop_fire_laser(self):
         self.Console.append("This button ALSO doesn't work, ha-ha ")
+
+
     def connect_ophir(self):
         try:
-            pass
+            Ophir.connect()
+            self.Console.append('Ophir connected')
         except Exception:
-            self.Console.append(f'Error ophir connection')
+            self.Console.append('Error ophir connection')
 
     def status_ophir(self):
-        pass
+        try:
+            result = self.Ophir.get_status()
+            self.Console.append(result)
+        except Exception:
+            self.Console.append('Some error in getting ophir status ')
 
     def arm_ophir(self):
-        ...
+        try:
+            result = Ophir.arm_ophir(int(self.ShotNumber.toPlainText()))
+            self.Console.append(result)
+        except Exception:
+            self.Console.append('Error ophir connection')
+
 
     def disarm_ophir(self):
-        ...
+        try:
+            result = Ophir.disarm_ophir()
+            self.Console.append(result)
+        except Exception:
+            self.Console.append('Error ophir disarm')
+
 
     def lcd_number(self):
         self.timer_clock += 1

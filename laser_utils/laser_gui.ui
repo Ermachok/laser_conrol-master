@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>929</width>
+    <width>1047</width>
     <height>427</height>
    </rect>
   </property>
@@ -103,7 +103,7 @@ font: 75 10pt &quot;MS Shell Dlg 2&quot;;</string>
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>530</x>
+      <x>670</x>
       <y>10</y>
       <width>341</width>
       <height>21</height>
@@ -123,7 +123,7 @@ font: 75 10pt &quot;MS Shell Dlg 2&quot;;</string>
    <widget class="QWidget" name="gridLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>530</x>
+      <x>670</x>
       <y>40</y>
       <width>341</width>
       <height>101</height>
@@ -171,6 +171,29 @@ font: 75 10pt &quot;MS Shell Dlg 2&quot;;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">background: rgb(255, 255, 255)</string>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="ShotNumber">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>30</y>
+      <width>71</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>10</y>
+      <width>71</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>SHOT NUMBER</string>
     </property>
    </widget>
   </widget>
