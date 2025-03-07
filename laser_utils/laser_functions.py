@@ -1,76 +1,78 @@
 import socket
 import threading
-#server_address = ('192.168.10.110', 4001)
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
-def arm(server_address, timeout:int = 3):
-
+def send_command(server_address, command, command_name, timeout=2):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     timer = threading.Timer(timeout, sock.close)
     try:
         timer.start()
         sock.connect(server_address)
-        sock.send(b'\x23\x03\x53\x00\x79')  # idling on
-        print('sent idling on')
+        sock.send(command)
+        logger.info(f'Sent {command_name}')
         answer_serv = sock.recv(1024)
-        print(answer_serv)
+        logger.info(f'Received: {answer_serv}')
 
-        sock.send(b'\x23\x03\x43\x00\x69')  # start
-        print('sent start')
-        answer_serv = sock.recv(1024)
-        print(answer_serv)
+        return answer_serv
+    except Exception as e:
+        logger.error(f'Error sending {command_name}: {e}')
+        raise TimeoutError(f'Cannot connect to laser: {e}')
+    finally:
+        timer.cancel()
         sock.close()
-        timer.cancel()
-        return True
-    except Exception:
-        print('Cannot connect to laser')
-        timer.cancel()
-        raise TimeoutError
 
-def disarm(server_address, timeout:int = 3):
 
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    timer = threading.Timer(timeout, sock.close)
+def arm(server_address, timeout=2):
     try:
-        sock.connect(server_address)
-
-        sock.send(b'\x23\x03\x44\x00\x70')  # stop
-        print('sent stop')
-        answer_serv = sock.recv(1024)
-        print(answer_serv)
-
-        sock.send(b'\x23\x03\x73\x00\x99')  # idling off
-        print('sent idling off')
-        answer_serv = sock.recv(1024)
-        print(answer_serv)
-        sock.close()
-        timer.cancel()
+        send_command(server_address, b'\x23\x03\x53\x00\x79', 'idling on', timeout)
         return True
-    except Exception:
-        print('Cannot disarm laser!!! WHAT DO YOU DO NOW?')
-        raise TimeoutError
+    except TimeoutError as e:
+        logger.error(f'Arming failed: {e}')
+        raise
+
+
+def start(server_address, timeout=2):
+    try:
+        send_command(server_address, b'\x23\x03\x43\x00\x69', 'start', timeout)
+        return True
+    except TimeoutError as e:
+        logger.error(f'Start pumping failed: {e}')
+        raise
+
+
+def disarm(server_address, timeout=2):
+    try:
+        send_command(server_address, b'\x23\x03\x73\x00\x99', 'idling off', timeout)
+        return True
+    except TimeoutError as e:
+        logger.error(f'Disarming failed: {e}')
+        raise
+
+
+def stop(server_address, timeout=2):
+    try:
+        send_command(server_address, b'\x23\x03\x44\x00\x70', 'stop', timeout)
+        return True
+    except TimeoutError as e:
+        logger.error(f'Disarming failed: {e}')
+        raise
+
 
 def fire(server_address):
-
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect(server_address)
-
-    sock.send(b'\x23\x03\x42\x00\x68')  # laser generator on
-    print('fire')
-    answer_serv = sock.recv(1024)
-    print(answer_serv)
-
-    sock.close()
+    try:
+        send_command(server_address, b'\x23\x03\x42\x00\x68', 'laser generator on')
+    except TimeoutError as e:
+        logger.error(f'Firing failed: {e}')
+        raise
 
 
 def fire_stop(server_address):
-
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect(server_address)
-
-    sock.send(b'\x23\x03\x62\x00\x88')  # laser generator off
-    print('stop fire')
-    answer_serv = sock.recv(1024)
-    print(answer_serv)
-    sock.close()
-
+    try:
+        send_command(server_address, b'\x23\x03\x62\x00\x88', 'laser generator off')
+    except TimeoutError as e:
+        logger.error(f'Stopping fire failed: {e}')
+        raise
